@@ -37,14 +37,17 @@ function esc(s){return String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;","
 function annualFreeSummary(){
  const dates={};
  ps.forEach(x=>x.days.forEach(d=>{dates[d.date]=(dates[d.date]||0)+(+d.hours||0)}));
- const years={};
- Object.entries(dates).forEach(([date,hours])=>{const year=date.slice(0,4);if(!years[year])years[year]={free:0};if(hours===0)years[year].free++});
- return Object.entries(years).sort((a,b)=>a[0].localeCompare(b[0])).map(([year,v])=>({year,free:v.free}));
+ const years=new Set([String(new Date().getFullYear()),...Object.keys(dates).map(date=>date.slice(0,4))]);
+ return [...years].sort().map(year=>{
+  const worked=Object.entries(dates).filter(([date,hours])=>date.startsWith(year)&&hours>0).length;
+  const daysInYear=(new Date(+year+1,0,1)-new Date(+year,0,1))/86400000;
+  return {year,worked,free:daysInYear-worked};
+ });
 }
 function list(){
- header("Pracovné hodiny");let totalH=0,totalE=0,totalAdvance=0,worked=0,periodDays=0;
- ps.forEach(x=>{totalH+=x.days.reduce((a,d)=>a+ +d.hours,0);totalE+=x.days.reduce((a,d)=>a+ +d.hours,0)*x.rate;totalAdvance+=+x.advance||0;worked+=x.days.filter(d=>+d.hours>0).length;periodDays+=x.days.length});
- const annual=annualFreeSummary(),currentYear=new Date().getFullYear(),free=annual.find(y=>y.year===currentYear)?.free||0;
+ header("Pracovné hodiny");let totalH=0,totalE=0,totalAdvance=0,periodDays=0;
+ ps.forEach(x=>{totalH+=x.days.reduce((a,d)=>a+ +d.hours,0);totalE+=x.days.reduce((a,d)=>a+ +d.hours,0)*x.rate;totalAdvance+=+x.advance||0;periodDays+=x.days.length});
+ const annual=annualFreeSummary(),currentYear=new Date().getFullYear(),current=annual.find(y=>y.year===currentYear),free=current?.free||365,worked=current?.worked||0;
  const annualHTML=annual.map(y=>`<div class="yearFreeRow"><span>${y.year}</span><b>${y.free} dní</b></div>`).join("");
  const ordered=ps.map((x,i)=>({x,i})).sort((a,b)=>D(a.x.start)-D(b.x.start));
  app.innerHTML=`<div class="listLayout"><section class="card"><div class="sectionTitle"><h2>Projekty</h2><span class="muted">${ps.length} ${ps.length==1?"projekt":"projektov"}</span></div><div id="p"></div><div class="actions" style="margin-top:16px;justify-content:flex-start"><button class="light" onclick="backupData()">💾 Uložiť údaje</button><button class="light" onclick="document.getElementById('restoreFile').click()">📂 Obnoviť údaje</button><input id="restoreFile" type="file" accept=".json,application/json" style="display:none" onchange="restoreData(event)"></div></section><aside class="card listSummary listTotal"><h3>📊 Celkový súhrn</h3><div class="sumGrid"><div class="sumItem"><span>Hodiny spolu</span><span class="sumValue">${fmt(totalH)} h</span></div><div class="sumItem"><span>Zárobok spolu</span><span class="sumValue">${fmt(totalE)} €</span></div><div class="sumItem"><span>Odpracované dni</span><span class="sumValue">${worked}</span></div><div class="sumItem"><span>Voľno v roku ${currentYear}</span><span class="sumValue">${free}</span></div><div class="sumItem"><span>Obdobie</span><span class="sumValue">${periodDays} dní</span></div><div class="sumItem"><span>Zálohy</span><span class="sumValue">${fmt(totalAdvance)} €</span></div><div class="sumItem"><span>Ostatok</span><span class="sumValue">${fmt(totalE-totalAdvance)} €</span></div></div><div class="yearlyFree"><h4>Voľno podľa rokov</h4>${annualHTML||'<p class="muted">Zatiaľ bez evidovaných dní.</p>'}</div></aside></div><button class="fab primary" onclick="newP()">+</button>`;
