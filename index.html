@@ -383,8 +383,21 @@ header.appHeader .brandLogo{filter:none!important;object-fit:contain!important;b
 .refTotal.refDue.refPlain+.refStamp{margin-top:14mm!important}
 @media screen and (max-width:820px){.invoicePage{overflow-x:auto}}
 @media print{.refInvoice{padding:8mm 10mm 22mm!important}.refStamp{width:42mm!important;max-width:42mm!important}}
+
+/* Synchronizácia */
+#syncModal{position:fixed;inset:0;background:rgba(15,25,45,.55);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px}
+#syncModal .syncBox{background:#fff;border-radius:16px;padding:22px;width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,.35);max-height:92vh;overflow:auto}
+#syncModal h3{margin:0 0 10px}
+#syncModal label{display:block;margin:10px 0 0;font-size:13px;font-weight:650}
+#syncModal input{width:100%;margin-top:5px}
+#syncModal .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.syncErr{color:#b42318;font-weight:700;min-height:1em;margin:8px 0 0}
+.syncStatus{color:#475467;font-size:13px;margin:6px 0}
+#syncBanner{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:9998;background:#0b3a78;color:#fff;border-radius:14px;padding:12px 16px;display:flex;gap:14px;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.35);max-width:92vw}
+#syncBanner button{border:0;border-radius:10px;padding:8px 14px;font-weight:700;cursor:pointer;background:#fff;color:#0b3a78}
+@media print{#syncModal,#syncBanner{display:none!important}}
 </style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet"></head>
-<body><header class="appHeader"><div class="headerBrand"><img class="brandLogo" alt="Logo Vladimír Bartoš" src="data:image/png;base64,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"><div class="brandText"><span id="appTitle" class="brandTitle">Pracovné hodiny</span><span class="brandSubtitle">Evidencia práce a projektov</span></div></div><nav class="topNav"><button class="navTab active" onclick="list()">▱ Projekty</button><button class="navTab" onclick="calendarView()">▦ Kalendár</button><button class="navTab" onclick="statsView()">▥ Štatistiky</button><button class="navTab" onclick="invoiceView()">€ Faktúry</button><button class="navTab" onclick="backupData()">⇩ Export</button><button class="navTab" onclick="settingsView()">⚙ Nastavenia</button></nav></header><main id="app"></main>
+<body><header class="appHeader"><div class="headerBrand"><img class="brandLogo" alt="Logo Vladimír Bartoš" src="data:image/png;base64,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"><div class="brandText"><span id="appTitle" class="brandTitle">Pracovné hodiny</span><span class="brandSubtitle">Evidencia práce a projektov</span></div></div><nav class="topNav"><button class="navTab active" onclick="list()">▱ Projekty</button><button class="navTab" onclick="calendarView()">▦ Kalendár</button><button class="navTab" onclick="statsView()">▥ Štatistiky</button><button class="navTab" onclick="invoiceView()">€ Faktúry</button><button class="navTab" onclick="backupData()">⇩ Export</button><button class="navTab" id="syncBtn" onclick="syncOpen()">☁ Sync</button><button class="navTab" onclick="settingsView()">⚙ Nastavenia</button></nav></header><main id="app"></main>
 <script>
 const K="ph_demo";let ps=JSON.parse(localStorage.getItem(K)||"[]"),cur=-1;
 const fmt=n=>Number(n||0).toLocaleString("sk-SK",{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -491,4 +504,155 @@ function saveDates(){let ns=document.getElementById("ds").value,ne=document.getE
 function edit(){let x=ps[cur];header("Upraviť");app.innerHTML=`<section class="projectsPanel projectFormPanel"><div class="panelHeading"><div><div class="eyebrow">ÚPRAVA ZÁKAZKY</div><h2>${esc(x.name)}</h2></div></div><div class="projectForm"><label for="editOrderNo">Číslo objednávky</label><input id="editOrderNo" value="${esc(x.orderNumber||"")}" placeholder="Zadaj číslo objednávky"><label for="editCountry">Štát projektu</label><select id="editCountry" class="countrySelect"><option value="">Vyber štát</option>${countryOptions.map(v=>`<option value="${v[0]}" ${(x.country||"")===v[0]?"selected":""}>${v[1]} ${v[2]}</option>`).join("")}</select><label for="er">Sadzba €/h – platí pre VŠETKY hodiny projektu</label><input id="er" type="number" step=".01" value="${x.rate}"><div class="actions"><button class="light" onclick="render()">Zrušiť</button><button class="primary" onclick="saveEdit()">Uložiť zmeny</button></div></div></section>`}
 function saveEdit(){ps[cur].orderNumber=document.getElementById("editOrderNo").value.trim();ps[cur].country=document.getElementById("editCountry").value;ps[cur].rate=+document.getElementById("er").value||0;save();render()}
 const app=document.getElementById("app");list();
-</script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script></body></html>
+</script><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script><script>
+/* ===== Synchronizácia PC <-> telefón (Firebase) ===== */
+(function(){
+"use strict";
+const CFG={apiKey:"AIzaSyCnBwT7LtBLlpYYS0NcrXKgs6HtYuqkzM0",authDomain:"pracovne-hodiny.firebaseapp.com",projectId:"pracovne-hodiny",storageBucket:"pracovne-hodiny.firebasestorage.app",messagingSenderId:"944223667073",appId:"1:944223667073:web:6834189c29f1ff20ac1e80"};
+const NAMES=["ps","trips","invoices"];
+const LSK=()=>({ps:K,trips:TK,invoices:IK});
+const PATH=(uid,n)=>"users/"+uid+"/store/"+n;
+const META="ph_sync_meta",DEVK="ph_sync_dev",EMAILK="ph_sync_email";
+let DEV=localStorage.getItem(DEVK);
+if(!DEV){DEV=Math.random().toString(36).slice(2)+Date.now().toString(36);localStorage.setItem(DEVK,DEV)}
+let auth=null,db=null,user=null,unsubs=[],timers={},stale=false,state="busy";
+const getMeta=()=>{try{return JSON.parse(localStorage.getItem(META)||"{}")}catch(e){return{}}};
+const setMeta=m=>localStorage.setItem(META,JSON.stringify(m));
+const localJson=n=>localStorage.getItem(LSK()[n])||"[]";
+const LABEL={ok:"☁ Sync ✓",busy:"☁ Sync …",err:"☁ Sync ⚠",out:"☁ Prihlásiť",offline:"☁ Offline"};
+const TEXT={ok:"Synchronizované.",busy:"Synchronizujem…",err:"Chyba synchronizácie. Skontroluj pripojenie.",out:"Nie si prihlásený.",offline:"Služba sa nepodarilo načítať (si offline?)."};
+function setState(s){state=s;const b=document.getElementById("syncBtn");if(b)b.textContent=LABEL[s]||"☁ Sync";const t=document.getElementById("syncStatus");if(t)t.textContent=TEXT[s]||""}
+
+/* --- lokálne zmeny -> cloud --- */
+function changed(n){const m=getMeta();m[n]={t:Date.now(),dirty:true};setMeta(m);schedule(n)}
+function schedule(n){clearTimeout(timers[n]);timers[n]=setTimeout(()=>push(n),700)}
+async function push(n){
+  if(!user||!db)return;
+  setState("busy");const t=Date.now();
+  try{
+    await db.doc(PATH(user.uid,n)).set({json:localJson(n),updatedAt:t,device:DEV});
+    const m=getMeta();
+    if(!(m[n]&&m[n].t>t)){m[n]={t,dirty:false};setMeta(m)}
+    setState("ok");
+  }catch(e){console.error(e);setState("err")}
+}
+function wrap(fname,n){
+  const orig=window[fname];if(typeof orig!=="function")return;
+  window[fname]=function(){
+    if(stale){alert("Údaje boli medzitým zmenené na inom zariadení. Stránka sa obnoví, aby si neprepísal novšie údaje. Poslednú zmenu prosím zadaj znova.");location.reload();return}
+    const r=orig.apply(this,arguments);changed(n);return r;
+  };
+}
+wrap("save","ps");wrap("saveTravel","trips");wrap("saveInvoices","invoices");
+
+/* --- prvé spojenie a porovnanie --- */
+async function reconcile(){
+  setState("busy");
+  const meta=getMeta(),remote={};
+  for(const n of NAMES){const s=await db.doc(PATH(user.uid,n)).get();remote[n]=s.exists?s.data():null}
+  const act={},ask=[];
+  for(const n of NAMES){
+    const loc=localJson(n),r=remote[n],m=meta[n],empty=(loc==="[]");
+    if(!r){act[n]=empty?"none":"push";continue}
+    if(r.json===loc){act[n]="adopt";continue}
+    if(!m){if(empty)act[n]="pull";else{act[n]="ask";ask.push(n)}continue}
+    if(m.dirty)act[n]="push";
+    else if(r.updatedAt>m.t)act[n]="pull";
+    else act[n]="push";
+  }
+  if(ask.length){
+    const useCloud=confirm("Na tomto zariadení aj v cloude sú rôzne údaje.\n\nOK = použiť údaje z cloudu (údaje v tomto zariadení sa prepíšu)\nZrušiť = nahrať údaje z tohto zariadenia do cloudu (údaje v cloude sa prepíšu)");
+    ask.forEach(n=>act[n]=useCloud?"pull":"push");
+  }
+  let pulled=false;const m2=getMeta();
+  for(const n of NAMES){
+    const a=act[n],r=remote[n];
+    if(a==="pull"){localStorage.setItem(LSK()[n],r.json);m2[n]={t:r.updatedAt,dirty:false};pulled=true}
+    else if(a==="adopt"){m2[n]={t:r.updatedAt,dirty:false}}
+  }
+  setMeta(m2);
+  for(const n of NAMES){if(act[n]==="push")await push(n)}
+  if(pulled){
+    if(sessionStorage.getItem("ph_sync_rl")!=="1"){sessionStorage.setItem("ph_sync_rl","1");location.reload();return "reload"}
+    stale=true;banner();
+  }else sessionStorage.removeItem("ph_sync_rl");
+  setState("ok");return "ok";
+}
+
+/* --- živé zmeny z iného zariadenia --- */
+function unlisten(){unsubs.forEach(u=>{try{u()}catch(e){}});unsubs=[]}
+function listen(){
+  unlisten();
+  NAMES.forEach(n=>{
+    unsubs.push(db.doc(PATH(user.uid,n)).onSnapshot(snap=>{
+      if(!snap.exists||(snap.metadata&&snap.metadata.hasPendingWrites))return;
+      const r=snap.data(),m=getMeta()[n];
+      if(r.device===DEV)return;
+      if(m&&r.updatedAt<=m.t)return;
+      if(m&&m.dirty)return;
+      const mm=getMeta();mm[n]={t:r.updatedAt,dirty:false};
+      if(r.json===localJson(n)){setMeta(mm);return}
+      localStorage.setItem(LSK()[n],r.json);setMeta(mm);stale=true;banner();
+    },e=>{console.error(e);setState("err")}));
+  });
+}
+function banner(){
+  if(document.getElementById("syncBanner"))return;
+  const d=document.createElement("div");d.id="syncBanner";
+  d.innerHTML='<span>Údaje boli aktualizované z iného zariadenia.</span><button type="button" onclick="location.reload()">Obnoviť</button>';
+  document.body.appendChild(d);
+}
+
+/* --- prihlásenie --- */
+function onAuth(u){
+  if(!u){user=null;unlisten();setState("out");return}
+  user=u;setState("busy");renderModal();
+  reconcile().then(r=>{if(r!=="reload")listen()}).catch(e=>{console.error(e);setState("err")});
+}
+const ERR={"auth/invalid-credential":"Nesprávny e-mail alebo heslo.","auth/wrong-password":"Nesprávny e-mail alebo heslo.","auth/user-not-found":"Nesprávny e-mail alebo heslo.","auth/invalid-email":"Neplatný e-mail.","auth/network-request-failed":"Chyba siete. Skontroluj pripojenie.","auth/too-many-requests":"Príliš veľa pokusov, skús o chvíľu.","auth/unauthorized-domain":"Doména nie je povolená vo Firebase (Authentication → Settings → Authorized domains)."};
+async function doLogin(){
+  const e=document.getElementById("syncEmail").value.trim(),p=document.getElementById("syncPass").value,er=document.getElementById("syncErr");
+  er.textContent="";
+  if(!auth){er.textContent="Služba sa ešte nenačítala alebo si offline. Skús o chvíľu.";return}
+  if(!e||!p){er.textContent="Zadaj e-mail aj heslo.";return}
+  try{await auth.signInWithEmailAndPassword(e,p);localStorage.setItem(EMAILK,e);closeModal()}
+  catch(x){er.textContent=ERR[x.code]||("Chyba: "+(x.code||x.message))}
+}
+function closeModal(){const o=document.getElementById("syncModal");if(o)o.remove()}
+function renderModal(){
+  const o=document.getElementById("syncModal");if(!o)return;
+  const box=o.querySelector(".syncBox");
+  if(user){
+    box.innerHTML='<h3>☁ Synchronizácia</h3><p>Prihlásený: <b>'+(user.email||"")+'</b></p><p id="syncStatus" class="syncStatus"></p><p class="muted">Údaje (projekty, faktúry, cesty) sa ukladajú do tvojho Firebase účtu a zobrazia sa na každom zariadení, kde sa prihlásiš.</p><div class="actions"><button class="light" type="button" id="syncNow">Synchronizovať teraz</button><button class="light" type="button" id="syncOut">Odhlásiť</button><button class="primary" type="button" id="syncClose">Zavrieť</button></div>';
+    box.querySelector("#syncNow").onclick=()=>{reconcile().then(r=>{if(r!=="reload")listen()}).catch(()=>setState("err"))};
+    box.querySelector("#syncOut").onclick=()=>{if(auth)auth.signOut();closeModal()};
+  }else{
+    box.innerHTML='<h3>☁ Prihlásenie do synchronizácie</h3><p class="muted">Prihlás sa e-mailom a heslom, ktoré si vytvoril vo Firebase. Rovnaké použi na PC aj v telefóne.</p><label>E-mail<input id="syncEmail" type="email" autocomplete="username" value="'+(localStorage.getItem(EMAILK)||"")+'"></label><label>Heslo<input id="syncPass" type="password" autocomplete="current-password"></label><p id="syncErr" class="syncErr"></p><p id="syncStatus" class="syncStatus"></p><div class="actions"><button class="light" type="button" id="syncClose">Zrušiť</button><button class="primary" type="button" id="syncLogin">Prihlásiť</button></div>';
+    box.querySelector("#syncLogin").onclick=doLogin;
+    box.querySelector("#syncPass").addEventListener("keydown",ev=>{if(ev.key==="Enter")doLogin()});
+  }
+  box.querySelector("#syncClose").onclick=closeModal;
+  setState(state);
+}
+window.syncOpen=function(){
+  closeModal();
+  const o=document.createElement("div");o.id="syncModal";o.innerHTML='<div class="syncBox"></div>';
+  o.addEventListener("click",ev=>{if(ev.target===o)closeModal()});
+  document.body.appendChild(o);renderModal();
+};
+
+/* --- načítanie Firebase SDK --- */
+function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement("script");s.src=src;s.onload=res;s.onerror=()=>rej(new Error("load "+src));document.head.appendChild(s)})}
+const B="https://www.gstatic.com/firebasejs/10.12.2/";
+(async function boot(){
+  setState("busy");
+  try{
+    await loadScript(B+"firebase-app-compat.js");
+    await Promise.all([loadScript(B+"firebase-auth-compat.js"),loadScript(B+"firebase-firestore-compat.js")]);
+    firebase.initializeApp(CFG);auth=firebase.auth();db=firebase.firestore();
+    auth.onAuthStateChanged(onAuth);
+  }catch(e){console.error(e);setState("offline")}
+})();
+})();
+
+</script></body></html>
